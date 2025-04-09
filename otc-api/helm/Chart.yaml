@@ -1,0 +1,6 @@
+apiVersion: v2
+name: otc-api
+description: A Helm chart for OTC API Service
+type: application
+version: 0.1.0
+appVersion: "1.4.1" 

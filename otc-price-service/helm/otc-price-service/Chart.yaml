@@ -1,0 +1,6 @@
+apiVersion: v2
+name: otc-price-service
+description: A Helm chart for OTC Price Service deployment on GKE
+type: application
+version: 0.1.0
+appVersion: "1.0.0" 

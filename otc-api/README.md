@@ -47,12 +47,49 @@ kubectl create secret docker-registry ghcr-secret \
 
 ## Deployment
 
+### Manual Deployment
+
 1. Update the values in `helm/values-gcp.yaml` with your configuration
 2. Deploy using Helm:
 
 ```bash
 helm upgrade --install otc-api ./helm/otc-api -f ./helm/values-gcp.yaml
 ```
+
+### Using deploy.sh Script
+
+The repository includes a deployment script (`scripts/deploy.sh`) that automates the deployment process. To use it:
+
+1. Set the required environment variables:
+```bash
+export DB_HOST="<postgres-host>"
+export DB_USER="<postgres-user>"
+export DB_PASSWORD="<postgres-password>"
+export DB_NAME="otcapi"
+export REDIS_HOST="<redis-host>"
+export REDIS_PASSWORD="<redis-password>"
+export JWT_SECRET="<jwt-secret>"
+export API_KEY="<api-key>"
+export GITHUB_USERNAME="<github-username>"
+export GITHUB_TOKEN="<github-token>"
+```
+
+2. Make the script executable:
+```bash
+chmod +x scripts/deploy.sh
+```
+
+3. Run the deployment script:
+```bash
+./scripts/deploy.sh
+```
+
+The script will:
+- Validate all required environment variables
+- Create necessary Kubernetes secrets
+- Generate the Helm values file
+- Deploy the service using Helm
+- Show deployment status
 
 ## Verification
 

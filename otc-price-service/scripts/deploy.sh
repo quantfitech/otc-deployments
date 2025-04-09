@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Exit on error
 set -e
-
-# Check for required environment variables
+s
 required_vars=(
     "DB_HOST"
     "DB_USER"
@@ -22,7 +20,6 @@ for var in "${required_vars[@]}"; do
     fi
 done
 
-# Create secrets
 echo "Creating Kubernetes secrets..."
 kubectl create secret generic otc-price-service-db-password \
     --from-literal=password="$DB_PASSWORD" \
@@ -34,7 +31,6 @@ kubectl create secret docker-registry ghcr-secret \
     --docker-password="$GITHUB_TOKEN" \
     --dry-run=client -o yaml | kubectl apply -f -
 
-# Update values file
 echo "Updating Helm values..."
 cat > helm/values-gcp.yaml << EOF
 image:
@@ -78,7 +74,6 @@ env:
   REDIS_PASSWORD: $REDIS_PASSWORD
 EOF
 
-# Deploy using Helm
 echo "Deploying with Helm..."
 helm upgrade --install otc-price-service ./helm/otc-price-service -f ./helm/values-gcp.yaml
 

@@ -38,4 +38,4 @@ All services require:
 
 ## Support
 
-For support, contact: <support-contact> 
+For support, contact: denis@coinmerce.io 

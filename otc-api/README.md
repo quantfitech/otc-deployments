@@ -85,4 +85,4 @@ Common issues and solutions:
 
 ## Support
 
-For support, contact: <support-contact> 
+For support, contact: denis@coinmerce.io 

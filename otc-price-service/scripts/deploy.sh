@@ -8,7 +8,6 @@ required_vars=(
     "DB_PASSWORD"
     "DB_NAME"
     "REDIS_HOST"
-    "REDIS_PASSWORD"
     "GH_USERNAME"
     "GH_TOKEN"
 )
@@ -71,7 +70,7 @@ env:
   DB_NAME: $DB_NAME
   REDIS_HOST: $REDIS_HOST
   REDIS_PORT: 6379
-  REDIS_PASSWORD: $REDIS_PASSWORD
+  REDIS_PASSWORD: ${REDIS_PASSWORD:-""}
 EOF
 
 echo "Deploying with Helm..."

@@ -38,10 +38,31 @@ jobs:
           sed -i "s/tag: v[0-9]\+\.[0-9]\+\.[0-9]\+/tag: ${{ github.event.inputs.version }}/" otc-price-service/scripts/deploy.sh
           sed -i "s/tag: \"v[0-9]\+\.[0-9]\+\.[0-9]\+\"/tag: \"${{ github.event.inputs.version }}\"/" otc-price-service/helm/values-gcp.yaml
 
+      - name: Extract environment variables
+        id: extract-env
+        run: |
+          DB_HOST=$(yq '.env.DB_HOST' otc-price-service/helm/values-gcp.yaml)
+          DB_PORT=$(yq '.env.DB_PORT' otc-price-service/helm/values-gcp.yaml)
+          DB_USER=$(yq '.env.DB_USER' otc-price-service/helm/values-gcp.yaml)
+          DB_NAME=$(yq '.env.DB_NAME' otc-price-service/helm/values-gcp.yaml)
+          REDIS_HOST=$(yq '.env.REDIS_HOST' otc-price-service/helm/values-gcp.yaml)
+          REDIS_PORT=$(yq '.env.REDIS_PORT' otc-price-service/helm/values-gcp.yaml)
+          REDIS_PASSWORD=$(yq '.env.REDIS_PASSWORD' otc-price-service/helm/values-gcp.yaml)
+          echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
+          echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
+          echo "DB_USER=$DB_USER" >> $GITHUB_ENV
+          echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
+          echo "REDIS_HOST=$REDIS_HOST" >> $GITHUB_ENV
+          echo "REDIS_PORT=$REDIS_PORT" >> $GITHUB_ENV
+          echo "REDIS_PASSWORD=$REDIS_PASSWORD" >> $GITHUB_ENV
+
       - name: Deploy to GCP
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           cd otc-price-service/scripts
           chmod +x deploy.sh
-          GH_USERNAME=${{ vars.GH_USERNAME }} GH_TOKEN=$GH_TOKEN ./deploy.sh 
+          GH_USERNAME=denis-maley GH_TOKEN=$GH_TOKEN \
+          DB_HOST=$DB_HOST DB_PORT=$DB_PORT DB_USER=$DB_USER DB_NAME=$DB_NAME \
+          REDIS_HOST=$REDIS_HOST REDIS_PORT=$REDIS_PORT REDIS_PASSWORD=$REDIS_PASSWORD \
+          ./deploy.sh 

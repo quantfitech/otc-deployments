@@ -31,7 +31,7 @@ kubectl create secret docker-registry ghcr-secret \
     --dry-run=client -o yaml | kubectl apply -f -
 
 echo "Updating Helm values..."
-cat > helm/values-gcp.yaml << EOF
+cat > ../helm/values-gcp.yaml << EOF
 image:
   repository: ghcr.io/quantfitech/otc-price-service
   tag: v1.4.2
@@ -74,6 +74,7 @@ env:
 EOF
 
 echo "Deploying with Helm..."
+cd ..
 helm upgrade --install otc-price-service ./helm/otc-price-service -f ./helm/values-gcp.yaml
 
 echo "Deployment completed!"

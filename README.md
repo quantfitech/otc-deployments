@@ -16,9 +16,7 @@ otc-deployments/
 ## Services
 
 ### OTC Price Service
-- Location: `otc-price-service/`
 - Description: Service for managing OTC price calculations
-- [Deployment Guide](otc-price-service/README.md)
 
 ## Adding New Services
 

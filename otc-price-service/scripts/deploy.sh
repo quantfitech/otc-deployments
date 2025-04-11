@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-s
+
 required_vars=(
     "DB_HOST"
     "DB_USER"
@@ -35,7 +35,7 @@ echo "Updating Helm values..."
 cat > helm/values-gcp.yaml << EOF
 image:
   repository: ghcr.io/quantfitech/otc-price-service
-  tag: v1.4.0
+  tag: v1.4.2
   pullPolicy: IfNotPresent
 
 imagePullSecrets:

@@ -66,15 +66,10 @@ jobs:
           echo "REDIS_PORT=$REDIS_PORT" >> $GITHUB_ENV
           echo "REDIS_PASSWORD=$REDIS_PASSWORD" >> $GITHUB_ENV
 
-      - name: Get DB Password
-        id: get-db-password
-        run: |
-          DB_PASSWORD=$(kubectl get secret db-credentials -o jsonpath='{.data.db-password}' | base64 --decode)
-          echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
-
       - name: Deploy to GCP
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           cd otc-price-service/scripts
           chmod +x deploy.sh

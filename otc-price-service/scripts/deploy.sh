@@ -9,8 +9,8 @@ required_vars=(
     "DB_NAME"
     "REDIS_HOST"
     "REDIS_PASSWORD"
-    "GITHUB_USERNAME"
-    "GITHUB_TOKEN"
+    "GH_USERNAME"
+    "GH_TOKEN"
 )
 
 for var in "${required_vars[@]}"; do
@@ -27,8 +27,8 @@ kubectl create secret generic otc-price-service-db-password \
 
 kubectl create secret docker-registry ghcr-secret \
     --docker-server=ghcr.io \
-    --docker-username="$GITHUB_USERNAME" \
-    --docker-password="$GITHUB_TOKEN" \
+    --docker-username="$GH_USERNAME" \
+    --docker-password="$GH_TOKEN" \
     --dry-run=client -o yaml | kubectl apply -f -
 
 echo "Updating Helm values..."

@@ -23,11 +23,12 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          project_id: ${{ vars.GCP_PROJECT_ID }}
 
       - name: Configure kubectl
         run: |
-          gcloud container clusters get-credentials ${{ secrets.GCP_CLUSTER_NAME }} --region ${{ secrets.GCP_REGION }} --project ${{ secrets.GCP_PROJECT_ID }}
+          echo "Getting credentials for cluster: ${{ vars.GCP_CLUSTER_NAME }} in region: ${{ vars.GCP_REGION }}"
+          gcloud container clusters get-credentials "${{ vars.GCP_CLUSTER_NAME }}" --region "${{ vars.GCP_REGION }}" --project "${{ vars.GCP_PROJECT_ID }}"
 
       - name: Update version in deploy script
         run: |
@@ -36,9 +37,8 @@ jobs:
 
       - name: Deploy to GCP
         env:
-          GH_USERNAME: ${{ secrets.GH_USERNAME }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           cd otc-price-service/scripts
           chmod +x deploy.sh
-          GH_USERNAME=$GH_USERNAME GH_TOKEN=$GH_TOKEN ./deploy.sh 
+          GH_USERNAME=${{ vars.GH_USERNAME }} GH_TOKEN=$GH_TOKEN ./deploy.sh 

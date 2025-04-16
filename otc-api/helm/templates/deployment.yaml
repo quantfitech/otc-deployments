@@ -42,29 +42,21 @@ spec:
               value: {{ .Values.env.REDIS_HOST | quote }}
             - name: REDIS_PORT
               value: {{ .Values.env.REDIS_PORT | quote }}
-            - name: REDIS_PASSWORD
-              value: {{ .Values.env.REDIS_PASSWORD | quote }}
-            - name: JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.secrets.jwtSecret.secretName }}
-                  key: {{ .Values.secrets.jwtSecret.key }}
-            - name: API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.secrets.apiKey.secretName }}
-                  key: {{ .Values.secrets.apiKey.key }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:
             httpGet:
               path: /health
               port: http
-            initialDelaySeconds: 30
-            periodSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /health
               port: http
-            initialDelaySeconds: 5
-            periodSeconds: 5 
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3 

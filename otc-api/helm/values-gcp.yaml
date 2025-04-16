@@ -10,7 +10,7 @@ imagePullSecrets:
 
 service:
   type: ClusterIP
-  port: 8080
+  port: 3000
 
 resources:
   limits:
@@ -21,27 +21,19 @@ resources:
     memory: 256Mi
 
 env:
-  DB_HOST: <postgres-host>
-  DB_PORT: 5432
-  DB_USER: <postgres-user>
+  DB_HOST: "104.198.119.222"
+  DB_PORT: 3306
+  DB_USER: "otc_user"
   DB_PASSWORD: <postgres-password>
   DB_NAME: otcapi
-  REDIS_HOST: <redis-host>
+  REDIS_HOST: "10.121.12.251"
   REDIS_PORT: 6379
-  REDIS_PASSWORD: <redis-password>
-  JWT_SECRET: <jwt-secret>
-  API_KEY: <api-key>
+  PORT: "3000"
 
 secrets:
   dbPassword:
-    secretName: otc-api-db-password
-    key: password
-  jwtSecret:
-    secretName: otc-api-jwt-secret
-    key: secret
-  apiKey:
-    secretName: otc-api-key
-    key: key
+    secretName: otc-db-password
+    key: db-password
 
 autoscaling:
   enabled: true

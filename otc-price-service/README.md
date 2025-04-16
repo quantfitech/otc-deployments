@@ -34,7 +34,7 @@ env:
 Create the following Kubernetes secrets:
 
 ```bash
-kubectl create secret generic otc-price-service-db-password --from-literal=password=<mysql-password>
+kubectl create secret generic otc-db-password --from-literal=password=<mysql-password>
 kubectl create secret docker-registry ghcr-secret \
   --docker-server=ghcr.io \
   --docker-username=<github-username> \

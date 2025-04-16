@@ -36,7 +36,7 @@ env:
 Create the following Kubernetes secrets:
 
 ```bash
-kubectl create secret generic otc-api-db-password --from-literal=password=<postgres-password>
+kubectl create secret generic otc-db-password --from-literal=password=<postgres-password>
 kubectl create secret generic otc-api-jwt-secret --from-literal=secret=<jwt-secret>
 kubectl create secret generic otc-api-key --from-literal=key=<api-key>
 kubectl create secret docker-registry ghcr-secret \

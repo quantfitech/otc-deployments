@@ -34,7 +34,7 @@ echo "Updating Helm values..."
 cat > ../helm/values-gcp.yaml << EOF
 image:
   repository: ghcr.io/quantfitech/otc-price-service
-  tag: v1.4.2
+  tag: latest
   pullPolicy: IfNotPresent
 
 imagePullSecrets:

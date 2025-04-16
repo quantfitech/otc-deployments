@@ -1,9 +1,9 @@
 replicaCount: 2
 
 image:
-  repository: ghcr.io/your-org/otc-api
+  repository: ghcr.io/quantfitech/otc-api
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "{{ .Values.imageTag | default .Chart.AppVersion }}"
 
 imagePullSecrets:
   - name: ghcr-secret

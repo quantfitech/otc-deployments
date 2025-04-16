@@ -1,4 +1,4 @@
-name: Deploy to GCP
+name: Deploy  OTC Base Price service to GCP
 
 on:
   workflow_dispatch:

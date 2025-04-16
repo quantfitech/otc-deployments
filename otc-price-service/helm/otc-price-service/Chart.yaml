@@ -3,4 +3,4 @@ name: otc-price-service
 description: A Helm chart for OTC Price Service deployment on GKE
 type: application
 version: 0.1.0
-appVersion: "1.4.6" 
+appVersion: "latest" 

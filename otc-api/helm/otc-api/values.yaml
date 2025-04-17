@@ -1,18 +1,30 @@
+replicaCount: 1
+
 image:
-  repository: ghcr.io/quantfitech/otc-api
-  tag: "{{ .Values.imageTag | default .Chart.AppVersion }}"
+  repository: ghcr.io/quantfitech/otc-price-service
   pullPolicy: IfNotPresent
+  tag: "latest"
 
 imagePullSecrets:
-  - name: ghcr-app-credentials
+  - name: ghcr-secret
+
+nameOverride: ""
+fullnameOverride: ""
 
 serviceAccount:
   create: true
-  name: otc-api
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
 
 service:
   type: ClusterIP
-  port: 3000
+  port: 8000
 
 resources:
   limits:
@@ -28,20 +40,22 @@ autoscaling:
   maxReplicas: 5
   targetCPUUtilizationPercentage: 80
 
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
 env:
   # Database Configuration
-  DB_HOST: "104.198.119.222"
+  DB_HOST: ""
   DB_PORT: "3306"
-  DB_USER: "otc_user"
-  DB_PASSWORD:
-    valueFrom:
-      secretKeyRef:
-        name: otc-db-password
-        key: password
-  DB_NAME: "otcdb"
+  DB_USER: ""
+  DB_PASSWORD: ""
+  DB_NAME: ""
   
   # Redis Configuration
-  REDIS_URL: "redis://10.121.12.251:6379"
+  REDIS_URL: ""
   
   # Application Configuration
   PORT: "3000"

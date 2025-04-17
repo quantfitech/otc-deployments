@@ -25,23 +25,10 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           env:
-            - name: DB_HOST
-              value: {{ .Values.env.DB_HOST | quote }}
-            - name: DB_PORT
-              value: {{ .Values.env.DB_PORT | quote }}
-            - name: DB_USER
-              value: {{ .Values.env.DB_USER | quote }}
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.secrets.dbPassword.secretName }}
-                  key: {{ .Values.secrets.dbPassword.key }}
-            - name: DB_NAME
-              value: {{ .Values.env.DB_NAME | quote }}
-            - name: REDIS_HOST
-              value: {{ .Values.env.REDIS_HOST | quote }}
-            - name: REDIS_PORT
-              value: {{ .Values.env.REDIS_PORT | quote }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:

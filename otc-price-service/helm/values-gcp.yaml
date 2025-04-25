@@ -30,14 +30,14 @@ autoscaling:
 
 env:
   # Database Configuration
-  DB_HOST: "104.198.119.222"
+  DB_HOST: "34.146.134.82"
   DB_PORT: "3306"
   DB_USER: "otc_user"
   DB_PASSWORD:
     valueFrom:
       secretKeyRef:
-        name: db-credentials
-        key: db-password
+        name: otc-db-password
+        key: password
   DB_NAME: "otcdb"
   
   # Redis Configuration

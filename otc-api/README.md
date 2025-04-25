@@ -8,7 +8,7 @@ This repository contains the deployment configuration for the OTC API Service.
 - Helm 3.x
 - kubectl configured with cluster access
 - Access to the container registry (ghcr.io)
-- PostgreSQL database instance
+- mysqlQL database instance
 - Redis instance (for caching)
 
 ## Configuration
@@ -19,10 +19,10 @@ The following environment variables need to be configured in `helm/values-gcp.ya
 
 ```yaml
 env:
-  DB_HOST: <postgres-host>
-  DB_PORT: 5432
-  DB_USER: <postgres-user>
-  DB_PASSWORD: <postgres-password>
+  DB_HOST: <mysql-host>
+  DB_PORT: 3306
+  DB_USER: <mysql-user>
+  DB_PASSWORD: <mysql-password>
   DB_NAME: otcapi
   REDIS_HOST: <redis-host>
   REDIS_PORT: 6379
@@ -36,7 +36,7 @@ env:
 Create the following Kubernetes secrets:
 
 ```bash
-kubectl create secret generic otc-api-db-password --from-literal=password=<postgres-password>
+kubectl create secret generic otc-db-password --from-literal=password=<mysql-password>
 kubectl create secret generic otc-api-jwt-secret --from-literal=secret=<jwt-secret>
 kubectl create secret generic otc-api-key --from-literal=key=<api-key>
 kubectl create secret docker-registry ghcr-secret \
@@ -62,9 +62,9 @@ The repository includes a deployment script (`scripts/deploy.sh`) that automates
 
 1. Set the required environment variables:
 ```bash
-export DB_HOST="<postgres-host>"
-export DB_USER="<postgres-user>"
-export DB_PASSWORD="<postgres-password>"
+export DB_HOST="<mysql-host>"
+export DB_USER="<mysql-user>"
+export DB_PASSWORD="<mysql-password>"
 export DB_NAME="otcapi"
 export REDIS_HOST="<redis-host>"
 export REDIS_PASSWORD="<redis-password>"

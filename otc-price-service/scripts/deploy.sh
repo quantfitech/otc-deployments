@@ -20,7 +20,7 @@ for var in "${required_vars[@]}"; do
 done
 
 echo "Creating Kubernetes secrets..."
-kubectl create secret generic otc-price-service-db-password \
+kubectl create secret generic otc-db-password \
     --from-literal=password="$DB_PASSWORD" \
     --dry-run=client -o yaml | kubectl apply -f -
 

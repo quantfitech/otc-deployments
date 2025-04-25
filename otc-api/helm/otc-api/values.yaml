@@ -51,7 +51,7 @@ env:
   DB_HOST: ""
   DB_PORT: "3306"
   DB_USER: ""
-  DB_PASSWORD: ""
+  # DB_PASSWORD is defined in environment-specific files like values-gcp.yaml
   DB_NAME: ""
   
   # Redis Configuration

@@ -74,7 +74,7 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           API_KEY: ${{ secrets.API_KEY }}
         run: |
-          helm upgrade --install otc-api ./otc-api/helm \
+          helm upgrade --install otc-api ./otc-api/helm/otc-api \
             -f ./otc-api/helm/values-gcp.yaml \
             --set env.DB_PASSWORD=$DB_PASSWORD \
             --set env.JWT_SECRET=$JWT_SECRET \

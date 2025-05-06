@@ -9,15 +9,18 @@
     systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
     devShell.packages = pkgs: with pkgs; [
       fd
+      fish
       nixd
       yaml-language-server
-      moreutils
       lefthook
       awscli2
       kubectl
       fluxcd
       kustomize
       kubeconform
+      kubernetes-helm
+      helm-docs
+      helm-ls
     ];
   };
 }

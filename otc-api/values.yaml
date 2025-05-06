@@ -1,0 +1,107 @@
+# Default values for otc-api.
+
+nameOverride: ""
+fullnameOverride: ""
+
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+image:
+  repository: ghcr.io/quantfitech/otc-api
+  pullPolicy: IfNotPresent
+  tag: 1.0.0
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: false
+  automount: true
+  annotations: {}
+  name: otc-api
+
+pod:
+  annotations: {}
+  labels: {}
+  securityContext: {}
+  env: {}
+  secret:
+    enable: false
+    name: "otc-api-secrets"
+    create: false
+    values:
+      REDIS_URL: "redis://user:password@hostname:port/db"
+      DB_HOST: "mysql-hostname"
+      DB_USER: "mysql-username"
+      DB_PASSWORD: "mysql-password"
+      DB_NAME: "mysql-database"
+      ENCRYPTION_KEY: "encryption-key"
+  configMap:
+    enable: false
+    ref: "otc-api-environment"
+    create: false
+    values:
+      LOG_LEVEL: "warn"
+      NODE_ENV: production
+      PORT: "3000"
+      EXPERIMENTS_ENABLED: "false"
+      MAX_LOG_STRING_LENGTH: "200"
+
+# Container security context
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# Service Configuration
+service:
+  type: ClusterIP
+  port: 80
+  # service annotations
+  annotations: {}
+
+# Ingress configuration
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+# Horizontal Pod Autoscaler settings
+hpa:
+  enabled: false
+  minReplicas: 4
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

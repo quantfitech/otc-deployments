@@ -41,7 +41,7 @@ jobs:
 
       - name: validate
         run: |
-          nix develop --command helm template ./${{ matrix.version }} | nix develop --command kubeconform \
+          nix develop --command helm template ./${{ matrix.chart }} | nix develop --command kubeconform \
             -kubernetes-version="master" \
             -schema-location default \
             -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \

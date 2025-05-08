@@ -44,13 +44,20 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          {{- with .Values.livenessProbe }}
+          {{- if .Values.livenessProbe.enable }}
           livenessProbe:
-            {{- toYaml . | nindent 12 }}
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 5
           {{- end }}
-          {{- with .Values.readinessProbe }}
+          {{- if .Values.readinessProbe.enable }}
           readinessProbe:
-            {{- toYaml . | nindent 12 }}
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 2
           {{- end }}
           {{- with .Values.resources }}
           resources:

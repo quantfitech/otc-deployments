@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "otc-price-service.fullname" . }}
+  name: {{ include "otc-price.fullname" . }}
   labels:
-    {{- include "otc-price-service.labels" . | nindent 4 }}
+    {{- include "otc-price.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "otc-price-service.selectorLabels" . | nindent 4 }} 
+    {{- include "otc-price.selectorLabels" . | nindent 4 }}

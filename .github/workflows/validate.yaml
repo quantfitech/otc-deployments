@@ -33,12 +33,11 @@ jobs:
 
       - name: validate
         run: |
-          for i in (ls ./)
+          for i in $(ls ./); do
             helm template ./$i | kubeconform \
               -kubernetes-version="master" \
               -schema-location default \
               -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
               -schema-location 'https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{.NormalizedKubernetesVersion}}/{{.ResourceKind}}.json' \
               -schema-location 'https://json.schemastore.org/{{.ResourceKind}}.json'
-          end
-        shell: nix develop --command fish -c {0}
+          done

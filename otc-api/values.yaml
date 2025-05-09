@@ -4,12 +4,12 @@ nameOverride: ""
 fullnameOverride: ""
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
-replicaCount: 1
+replicaCount: 4
 
 image:
   repository: ghcr.io/quantfitech/otc-api
   pullPolicy: IfNotPresent
-  tag: 1.0.0
+  tag: 1.0.0 # {"$imagepolicy": "default:otc-api-production:tag"}
 
 imagePullSecrets: []
 

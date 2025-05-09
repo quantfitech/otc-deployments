@@ -9,7 +9,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/quantfitech/otc-price-service
   pullPolicy: IfNotPresent
-  tag: 1.0.0
+  tag: 1.0.0 # {"$imagepolicy": "default:otc-price-production:tag"}
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []

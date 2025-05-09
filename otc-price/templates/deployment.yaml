@@ -60,6 +60,15 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          envFrom:
+          {{- if .Values.pod.configMap.enable }}
+            - configMapRef:
+                name: {{ .Values.pod.env.configMap.ref }}
+          {{- end }}
+          {{- if .Values.pod.secret.enable }}
+            - secretRef:
+                name: {{ .Values.pod.secret.ref }}
+          {{- end }}
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}

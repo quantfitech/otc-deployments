@@ -9,6 +9,8 @@
     systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
     devShell.packages = pkgs: with pkgs; [
       fd
+      entr
+      yq
       nixd
       yaml-language-server
       lefthook

@@ -3,4 +3,4 @@ name: otc-price
 description: OTC Price service
 type: application
 version: 25.05.0
-appVersion: "1.16.0"
+appVersion: 25.05.0

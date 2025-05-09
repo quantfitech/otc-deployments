@@ -1,0 +1,25 @@
+name: publish
+on:
+  workflow_dispatch:
+  registry_package:
+
+env:
+  HELM_EXPERIMENTAL_OCI: 1
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  publish:
+    runs-on: ["ubuntu-latest"]
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: nixbuild/nix-quick-install-action@v30
+      - uses: nix-community/cache-nix-action@v6
+      - run: .github/workflows/publish.sh

@@ -1,0 +1,49 @@
+name: validate
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+      - review_requested
+      - ready_for_review
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ["ubuntu-latest"]
+    strategy:
+      matrix:
+        chart: ["otc-api", "otc-price"]
+    # steps:
+    #   - uses: actions/setup-node@v4
+    #     with:
+    #       node-version: ${{ matrix.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: nixbuild/nix-quick-install-action@v30
+      - name: Restore and save Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          gc-max-store-size-linux: 1G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-
+
+      - name: validate
+        run: |
+          nix develop --quiet --command helm template ./${{ matrix.chart }} | nix develop --quiet --command kubeconform -output tap -summary \
+            -kubernetes-version="master" \
+            -schema-location default \
+            -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+            -schema-location 'https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{.NormalizedKubernetesVersion}}/{{.ResourceKind}}.json' \
+            -schema-location 'https://json.schemastore.org/{{.ResourceKind}}.json'

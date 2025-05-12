@@ -32,4 +32,4 @@ jobs:
 
       - name: validate
         run: .github/workflows/validate.sh
-        shell: nix develop --quiet --command fish -- -C {0}
+        shell: nix develop --quiet --command fish {0}

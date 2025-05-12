@@ -23,3 +23,6 @@ jobs:
       - uses: nixbuild/nix-quick-install-action@v30
       - uses: nix-community/cache-nix-action@v6
       - run: .github/workflows/publish.sh
+        env:
+          OCI_USERNAME: ${{ github.actor }}
+          OCI_PPASSWORD: ${{ secrets.GITHUB_TOKEN }}

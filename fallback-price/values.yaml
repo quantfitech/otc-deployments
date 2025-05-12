@@ -1,0 +1,49 @@
+image:
+  repository: 848009531425.dkr.ecr.ap-northeast-1.amazonaws.com/si-monitor
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+
+# docs: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+
+# docs: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 2000m
+    memory: 2Gi
+ 
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+# configuration path
+configPath: "/config"
+
+# pod's node selector
+nodeSelector: {}
+
+# pod's node tolerations
+tolerations: []
+
+# pod's node affinity
+affinity: {}

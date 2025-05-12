@@ -1,0 +1,6 @@
+apiVersion: v2
+name: fallback-price
+description: fallback-price service
+type: application
+version: 25.5.0
+appVersion: "1.16.0"

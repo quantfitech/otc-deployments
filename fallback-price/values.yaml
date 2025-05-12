@@ -15,6 +15,29 @@ podAnnotations: {}
 # docs: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
+pod:
+  annotations: {}
+  labels: {}
+  securityContext: {}
+  env: {}
+  secret:
+    enable: false
+    name: "fallback-price-secrets"
+    create: false
+    values:
+      DATADOG_API_KEY: "DATADOG_API_KEY-FqMxQn:::"
+      DB_PASSWORD: "RDS_PASSWORD-9yeWJP:::"
+  configMap:
+    enable: false
+    ref: "fallback-price-environment"
+    create: false
+    values:
+      LOG_LEVEL: "warn"
+      NODE_ENV: production
+      PORT: "3000"
+      EXPERIMENTS_ENABLED: "false"
+      MAX_LOG_STRING_LENGTH: "200"
+
 resources:
   limits:
     cpu: 1000m

@@ -12,6 +12,11 @@ on:
       - review_requested
       - ready_for_review
   workflow_dispatch:
+
+permissions:
+  checks: write
+  contents: read
+
 jobs:
   validate:
     runs-on: ["ubuntu-latest"]

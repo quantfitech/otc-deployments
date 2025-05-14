@@ -3,6 +3,12 @@ on:
   workflow_dispatch:
   registry_package:
 
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+  pull-requests: write
+
 env:
   HELM_EXPERIMENTAL_OCI: 1
   REGISTRY: ghcr.io
@@ -25,4 +31,4 @@ jobs:
       - run: .github/workflows/publish.sh
         env:
           OCI_USERNAME: ${{ github.actor }}
-          OCI_PPASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          OCI_PPASSWORD: ${{ github.token }}

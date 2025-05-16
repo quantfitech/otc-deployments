@@ -1,6 +1,6 @@
 apiVersion: v2
-name: fallback-price
-description: fallback-price service
+name: si-monitor
+description: A Helm chart for Kubernetes
 type: application
 version: 25.05.0
 appVersion: 25.05.0

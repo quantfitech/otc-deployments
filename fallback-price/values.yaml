@@ -8,6 +8,7 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+schedule: "*/5 * * * *"
 
 # docs: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 podAnnotations: {}

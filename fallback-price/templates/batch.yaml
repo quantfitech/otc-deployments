@@ -9,7 +9,7 @@ metadata:
   labels:
     {{- include "fallback-price.labels" . | nindent 4 }}
 spec:
-  schedule: "*/5 * * * *"
+  schedule: {{ .Values.schedule }}
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: 12
   successfulJobsHistoryLimit: 6
@@ -28,20 +28,21 @@ spec:
             {{- end }}
         spec:
           containers:
-            - name: si-monitor
-              image: 848009531425.dkr.ecr.ap-northeast-1.amazonaws.com/si-monitor:latest
-              imagePullPolicy: Always
-              command:
-                - python3
-                - main.py
-                - --file
-                - /config
+            - name: fallback-price
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
               env:
                 - name: ENV
                   value: {{ .Values.environment }}
               envFrom:
+              {{- if .Values.pod.configMap.enable }}
+                - configMapRef:
+                    name: {{ .Values.pod.env.configMap.ref }}
+              {{- end }}
+              {{- if .Values.pod.secret.enable }}
                 - secretRef:
-                    name: si-monitor-environment
+                    name: {{ .Values.pod.secret.ref }}
+              {{- end }}
           volumes:
           {{- with .Values.volumes }}
             {{- toYaml . | nindent 8}}

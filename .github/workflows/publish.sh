@@ -23,16 +23,23 @@ if ! set -q $GITHUB_STEP_SUMMARY
 end
 
 # generate new version id
-
-set ver "$(date +'%g.%m.')$GITHUB_RUN_NUMBER"
-set charts (fd Chart.yaml -x echo \{//\})
-
+set helmVersion "$(date +'%g.%m.')$GITHUB_RUN_NUMBER"
 echo "generated version: $ver"
 
+set charts (fd Chart.yaml -x echo \{//\})
+
 for i in (fd Chart.yaml)
-  yq -i -y ".version = \"$ver\"" $i
-  yq -i -y ".appVersion = \"$ver\"" $i
-end
+  set appVersion latest
+  set repo (cat (string replace Chart.yaml .repository $i))
+
+  set appVersion (curl -H "Authorization: Bearer $OCI_PASSWORD" \
+                  -s "https://ghcr.io/v2/$repo/tags/list" \
+                  | jq -r 'select(startswith("production"))|sort|reverse|.[0]'
+                  )
+
+  yq -i -y ".version = \"$helmVersion\"" $i
+  yq -i -y ".appVersion = \"$appVersion\"" $i
+# end
 
 # login in the OCI repository
 helm registry login \
@@ -51,7 +58,7 @@ end
 #
 # Git PR
 #
-git config set "email" "${GITHUB_ACTOR}@users.noreply.github.com"
+git config set "email" "$GITHUB_ACTOR@users.noreply.github.com"
 git config set "name" "github-actions"
 
 

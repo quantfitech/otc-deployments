@@ -37,3 +37,25 @@ All services require:
 ## Support
 
 For support, contact: denis@coinmerce.io 
+
+
+# Helm notes:
+
+create/update the repo index
+
+    $ helm repo index fantastic-charts/ --url https://fantastic-charts.storage.googleapis.com
+
+create a repo and push it to an OCI registry repository
+
+    $ helm create demo
+    Creating demo
+
+    $ helm package demo
+    Successfully packaged chart and saved it to: /tmp/demo-0.1.0.tgz
+
+    $ echo "mypass" | helm registry login r.example.com -u myuser --password-stdin
+    Login Succeeded
+
+    $ helm push demo-0.1.0.tgz oci://r.example.com/myuser
+    Pushed: r.example.com/myuser/demo:0.1.0
+    Digest: sha256:7ed393daf1ffc94803c08ffcbecb798fa58e786bebffbab02da5458f68d0ecb0

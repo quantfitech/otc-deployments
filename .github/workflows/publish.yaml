@@ -1,0 +1,51 @@
+name: publish
+on:
+  workflow_dispatch:
+  registry_package:
+
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+  pull-requests: write
+
+env:
+  HELM_EXPERIMENTAL_OCI: 1
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  publish:
+    runs-on: ["ubuntu-latest"]
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.ref }}
+          submodules: recursive
+          token: ${{ steps.app_token.outputs.token }}
+
+      - uses: nixbuild/nix-quick-install-action@v30
+      - uses: nix-community/cache-nix-action@v6
+
+      - name: generate token
+        uses: actions/create-github-app-token@v1
+        id: app_token
+        with:
+          app-id: ${{ secrets.MINIQUANTBOT_APPID }}
+          private-key: ${{ secrets.MINIQUANTBOT_PKEY }}
+          # owner is required, otherwise the creds will fail the checkout step
+          owner: ${{ github.repository_owner }}
+
+
+
+      - run: .github/workflows/publish.sh
+        env:
+          OCI_USERNAME: ${{ github.actor }}
+          OCI_PASSWORD: ${{ steps.app_token.outputs.token }}

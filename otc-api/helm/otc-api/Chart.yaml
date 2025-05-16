@@ -1,6 +1,0 @@
-apiVersion: v2
-name: otc-api
-description: A Helm chart for OTC API Service  deployment on GKE
-type: application
-version: 0.1.0
-appVersion: "latest" 

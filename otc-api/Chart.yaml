@@ -1,0 +1,6 @@
+apiVersion: v2
+name: otc-api
+description: Off the counter API
+type: application
+version: 25.05.0
+appVersion: 25.05.0

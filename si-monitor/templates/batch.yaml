@@ -1,0 +1,63 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "si-monitor.fullname" . }}
+  {{- with .Values.cronJobAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4}}
+  {{- end }}
+  labels:
+    {{- include "si-monitor.labels" . | nindent 4 }}
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 12
+  successfulJobsHistoryLimit: 6
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 0
+      template:
+        metadata:
+          {{- with .Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          labels:
+            {{- with .Values.podLabels }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        spec:
+          containers:
+            - name: si-monitor
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              env:
+                - name: ENV
+                  value: {{ .Values.environment }}
+              envFrom:
+              {{- if .Values.pod.configMap.enable }}
+                - configMapRef:
+                    name: {{ .Values.pod.env.configMap.ref }}
+              {{- end }}
+              {{- if .Values.pod.secret.enable }}
+                - secretRef:
+                    name: {{ .Values.pod.secret.ref }}
+              {{- end }}
+          volumes:
+          {{- with .Values.volumes }}
+            {{- toYaml . | nindent 8}}
+          {{- end }}
+          restartPolicy: OnFailure
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+

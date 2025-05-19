@@ -3,9 +3,9 @@ replicaCount: 1
 
 # Container image. Docs: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: nginx
+  repository: ghcr.io/quantfitech/order-manager
   pullPolicy: IfNotPresent
-  tag: ""
+  tag: "latest"
 
 # Secrets for pulling an image from a private repository. Docs: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []

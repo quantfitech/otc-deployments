@@ -1,7 +1,7 @@
 image:
-  repository: 848009531425.dkr.ecr.ap-northeast-1.amazonaws.com/si-monitor
+  repository: ghcr.io/quantfitech/fallback-price
   pullPolicy: IfNotPresent
-  tag: ""
+  tag: "latest"
 
 imagePullSecrets: []
 

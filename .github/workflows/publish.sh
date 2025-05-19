@@ -39,7 +39,7 @@ for i in (fd Chart.yaml)
 
   yq -i -y ".version = \"$helmVersion\"" $i
   yq -i -y ".appVersion = \"$appVersion\"" $i
-# end
+end
 
 # login in the OCI repository
 helm registry login \

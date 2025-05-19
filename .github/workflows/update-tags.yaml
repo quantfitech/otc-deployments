@@ -1,25 +1,13 @@
-name: publish
 on:
-  workflow_dispatch:
-  registry_package:
-
-permissions:
-  id-token: write
-  contents: read
-  packages: write
-  pull-requests: write
-
-env:
-  HELM_EXPERIMENTAL_OCI: 1
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  schedule:
+    - cron: "0 * * * *"
 
 jobs:
-  publish:
+  update-tags:
     runs-on: ["ubuntu-latest"]
     permissions:
       contents: read
-      packages: write
+      packages: read
       attestations: write
       id-token: write
     steps:
@@ -43,7 +31,4 @@ jobs:
       - uses: nixbuild/nix-quick-install-action@v30
       - uses: nix-community/cache-nix-action@v6
 
-      - run: .github/workflows/publish.sh
-        env:
-          OCI_USERNAME: ${{ github.actor }}
-          OCI_PASSWORD: ${{ steps.app_token.outputs.token }}
+      - run: .github/workflows/update-tags.sh

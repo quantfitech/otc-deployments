@@ -32,3 +32,7 @@ jobs:
       - uses: nix-community/cache-nix-action@v6
 
       - run: .github/workflows/update-tags.sh
+        env:
+          OCI_USERNAME: ${{ github.repository_owner }}
+          OCI_PASSWORD: ${{ steps.app_token.outputs.token }}
+          

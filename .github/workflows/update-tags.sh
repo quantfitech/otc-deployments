@@ -9,8 +9,7 @@ function check_err
   end
 end
 
-set basicauth (echo -n "zenlor:$OCI_PASSWORD" | base64 -w0)
-echo $basicauth
+set basicauth (echo -n "$OCI_USERNAME:$OCI_PASSWORD" | base64 -w0)
 
 for chartfile in (fd Chart.yaml)
   set appVersion latest

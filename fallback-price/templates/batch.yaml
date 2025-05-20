@@ -9,7 +9,7 @@ metadata:
   labels:
     {{- include "fallback-price.labels" . | nindent 4 }}
 spec:
-  schedule: {{ .Values.schedule }}
+  schedule: {{ .Values.schedule | quote }}
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: 12
   successfulJobsHistoryLimit: 6

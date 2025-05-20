@@ -9,7 +9,7 @@ metadata:
   labels:
     {{- include "si-monitor.labels" . | nindent 4 }}
 spec:
-  schedule: "*/5 * * * *"
+  schedule: {{ .Values.schedule | quote }}
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: 12
   successfulJobsHistoryLimit: 6
@@ -43,7 +43,18 @@ spec:
                 - secretRef:
                     name: {{ .Values.pod.secret.ref }}
               {{- end }}
+              volumeMounts:
+              {{- if .Values.pod.configurations.enable }}
+                - name: {{ .Values.pod.configurations.volumeName }}
+                  readOnly: true
+                  mountPath: {{ .Values.pod.configurations.mountPath }}
+              {{- end }}
           volumes:
+          {{- if .Values.pod.configurations.enable }}
+            - name: {{ .Values.pod.configurations.volumeName }}
+              secret:
+                secretName: {{ .Values.pod.configurations.secretName }}
+          {{- end}}
           {{- with .Values.volumes }}
             {{- toYaml . | nindent 8}}
           {{- end }}

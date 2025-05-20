@@ -13,33 +13,65 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+schedule:  "*/5 * * * *"
+
+pod:
+  annotations: {}
+  labels: {}
+  securityContext: {}
+  env: {}
+  secret:
+    enable: false
+    name: "si-monitor-secrets"
+    create: false
+    values:
+      REDIS_URL: "redis://user:password@hostname:port/db"
+      REDIS_HOST: "hostname:port"
+      DB_HOST: "mysql-hostname"
+      DB_USER: "mysql-username"
+      DB_PASSWORD: "mysql-password"
+      DB_NAME: "mysql-database"
+      ENCRYPTION_KEY: "encryption-key"
+  configMap:
+    enable: false
+    ref: "si-monitor-environment"
+    create: false
+    values:
+      LOG_LEVEL: "warn"
+      NODE_ENV: production
+      PORT: "3000"
+      EXPERIMENTS_ENABLED: "false"
+      MAX_LOG_STRING_LENGTH: "200"
+      HTTP_PROXY: ""
+  configurations:
+    enable: true
+    secretName: "si-monitor-configurations"
+    volumeName: "si-monitor-configurations"
+    mountPath: "/config"
+    create: true
+    values:
+      exchange.yaml:
+        account: 'SOME_ACCOUNT'
+        connections:
+          - type: exchange
+            label: 'MARKET_MAKING'
+            entity: CO
+            venue: BTV
+            credentials:
+                api_key: "AAAAAAAAAAAAAAA"
+                api_secret: "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+            methods:
+              - get_balances
+            options:
+                exchange_id: bitvavo
+
+
+# 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
-
-# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Automatically mount a ServiceAccount's API credentials?
-  automount: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-
-# This is for setting Kubernetes Annotations to a Pod.
-# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
-podAnnotations: {}
-# This is for setting Kubernetes Labels to a Pod.
-# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-podLabels: {}
-
-podSecurityContext: {}
-  # fsGroup: 2000
 
 securityContext: {}
   # capabilities:
@@ -49,59 +81,13 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
-service:
-  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: ClusterIP
-  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
-
-# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
-
-# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+  requests:
+    cpu: 1000m
+    memory: 1Gi
 
 # Additional volumes on the output Deployment definition.
 volumes: []

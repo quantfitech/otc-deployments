@@ -34,6 +34,10 @@ spec:
               env:
                 - name: ENV
                   value: {{ .Values.environment }}
+                {{- if .Values.pod.configurations.enable }}
+                - name: CONFIG_FOLDER
+                  value: {{ .Values.pod.configurations.mountPath }}
+                {{- end }}
               envFrom:
               {{- if .Values.pod.configMap.enable }}
                 - configMapRef:

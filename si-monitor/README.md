@@ -1,8 +1,8 @@
-# otc-api
+# si-monitor
 
 ![Version: 25.05.0](https://img.shields.io/badge/Version-25.05.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
-Off the counter API
+A Helm chart for Kubernetes
 
 ## Values
 
@@ -10,61 +10,59 @@ Off the counter API
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | fullnameOverride | string | `""` |  |
-| hpa.enabled | bool | `false` |  |
-| hpa.maxReplicas | int | `100` |  |
-| hpa.minReplicas | int | `4` |  |
-| hpa.targetCPUUtilizationPercentage | int | `80` |  |
-| hpa.targetMemoryUtilizationPercentage | int | `80` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"ghcr.io/quantfitech/otc-api"` |  |
-| image.tag | string | `"1.0.0"` |  |
+| image.repository | string | `"ghcr.io/quantfitech/si-monitor"` |  |
+| image.tag | string | `""` |  |
 | imagePullSecrets | list | `[]` |  |
-| ingress.annotations | object | `{}` |  |
-| ingress.className | string | `""` |  |
-| ingress.enabled | bool | `false` |  |
-| ingress.hosts[0].host | string | `"chart-example.local"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
-| ingress.tls | list | `[]` |  |
-| livenessProbe.enable | bool | `true` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | pod.annotations | object | `{}` |  |
 | pod.configMap.create | bool | `false` |  |
 | pod.configMap.enable | bool | `false` |  |
-| pod.configMap.ref | string | `"otc-api-environment"` |  |
+| pod.configMap.ref | string | `"si-monitor-environment"` |  |
 | pod.configMap.values.EXPERIMENTS_ENABLED | string | `"false"` |  |
+| pod.configMap.values.HTTP_PROXY | string | `""` |  |
 | pod.configMap.values.LOG_LEVEL | string | `"warn"` |  |
 | pod.configMap.values.MAX_LOG_STRING_LENGTH | string | `"200"` |  |
 | pod.configMap.values.NODE_ENV | string | `"production"` |  |
 | pod.configMap.values.PORT | string | `"3000"` |  |
+| pod.configurations.create | bool | `true` |  |
+| pod.configurations.enable | bool | `true` |  |
+| pod.configurations.mountPath | string | `"/config"` |  |
+| pod.configurations.secretName | string | `"si-monitor-configurations"` |  |
+| pod.configurations.values."exchange.yaml".account | string | `"SOME_ACCOUNT"` |  |
+| pod.configurations.values."exchange.yaml".connections[0].credentials.api_key | string | `"AAAAAAAAAAAAAAA"` |  |
+| pod.configurations.values."exchange.yaml".connections[0].credentials.api_secret | string | `"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"` |  |
+| pod.configurations.values."exchange.yaml".connections[0].entity | string | `"CO"` |  |
+| pod.configurations.values."exchange.yaml".connections[0].label | string | `"MARKET_MAKING"` |  |
+| pod.configurations.values."exchange.yaml".connections[0].methods[0] | string | `"get_balances"` |  |
+| pod.configurations.values."exchange.yaml".connections[0].options.exchange_id | string | `"bitvavo"` |  |
+| pod.configurations.values."exchange.yaml".connections[0].type | string | `"exchange"` |  |
+| pod.configurations.values."exchange.yaml".connections[0].venue | string | `"BTV"` |  |
+| pod.configurations.volumeName | string | `"si-monitor-configurations"` |  |
 | pod.env | object | `{}` |  |
 | pod.labels | object | `{}` |  |
 | pod.secret.create | bool | `false` |  |
 | pod.secret.enable | bool | `false` |  |
-| pod.secret.name | string | `"otc-api-secrets"` |  |
+| pod.secret.name | string | `"si-monitor-secrets"` |  |
 | pod.secret.values.DB_HOST | string | `"mysql-hostname"` |  |
 | pod.secret.values.DB_NAME | string | `"mysql-database"` |  |
 | pod.secret.values.DB_PASSWORD | string | `"mysql-password"` |  |
 | pod.secret.values.DB_USER | string | `"mysql-username"` |  |
 | pod.secret.values.ENCRYPTION_KEY | string | `"encryption-key"` |  |
+| pod.secret.values.REDIS_HOST | string | `"hostname:port"` |  |
 | pod.secret.values.REDIS_URL | string | `"redis://user:password@hostname:port/db"` |  |
 | pod.securityContext | object | `{}` |  |
-| readinessProbe.enable | bool | `true` |  |
-| replicaCount | int | `4` |  |
+| replicaCount | int | `1` |  |
 | resources.limits.cpu | string | `"1000m"` |  |
 | resources.limits.memory | string | `"2Gi"` |  |
-| resources.requests.cpu | string | `"500m"` |  |
-| resources.requests.memory | string | `"512Mi"` |  |
+| resources.requests.cpu | string | `"1000m"` |  |
+| resources.requests.memory | string | `"1Gi"` |  |
+| schedule | string | `"*/5 * * * *"` |  |
 | securityContext | object | `{}` |  |
-| service.annotations | object | `{}` |  |
-| service.port | int | `80` |  |
-| service.type | string | `"ClusterIP"` |  |
-| serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.automount | bool | `true` |  |
-| serviceAccount.create | bool | `false` |  |
-| serviceAccount.name | string | `"otc-api"` |  |
 | tolerations | list | `[]` |  |
+| volumeMounts | list | `[]` |  |
+| volumes | list | `[]` |  |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)

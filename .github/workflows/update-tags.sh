@@ -43,13 +43,16 @@ for chartfile in (fd Chart.yaml)
   yq -i -y ".appVersion = \"$appVersion\"" $chartfile
 end
 
+# update helm chart readmes
+echo "updating helm documentation"
+helm-docs
+
 #
 # Git update
 #
-begin
-  git config set "user.email" "$GITHUB_ACTOR@users.noreply.github.com"
-  git config set "user.name" "github-actions"
-  git add ./*/Chart.yaml
-  git commit -m 'chore: update appVersion to latest'
-  git push
-end
+git config set "user.email" "$GITHUB_ACTOR@users.noreply.github.com"
+git config set "user.name" "github-actions"
+git add ./*/Chart.yaml
+git add ./*/README.md
+git commit -m 'chore: update appVersion to latest'
+git push

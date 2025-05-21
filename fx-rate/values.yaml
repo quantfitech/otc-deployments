@@ -15,6 +15,16 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+volumeMounts:
+  - name: fx-rate-volume
+    mountPath: /app/config.yaml
+    subPath: config.yaml
+
+volumes:
+  - name: fx-rate-volume
+    configMap:
+      name: fx-rate
+
 pod:
   annotations: {}
   labels: {}
@@ -25,16 +35,28 @@ pod:
     name: "fx-rate-secrets"
     create: false
     values:
-      REDIS_URL: "redis://user:password@hostname:port/db"
+      REDIS_HOST: "hostname"
   configMap:
-    enable: false
+    enable: true
     ref: "fx-rate-environment"
-    create: false
+    create: true
     values:
       LOG_LEVEL: "warn"
-      NODE_ENV: production
       MAX_LOG_STRING_LENGTH: "200"
-  
+      config.yaml: |
+        exchanges:
+          - exchange: bitstamp
+            name: BITSTAMP
+            symbol: USDT/EUR
+          - exchange: kraken
+            name: KRAKEN
+            symbol: USDT/EUR
+          - exchange: coinbase
+            name: Coinbase Advanced
+            symbol: USDT/EUR
+
+        weights: [0.3, 0.2, 0.5]
+
 securityContext: {}
   # capabilities:
   #   drop:

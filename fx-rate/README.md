@@ -28,7 +28,7 @@ A Helm chart for Kubernetes
 | pod.secret.create | bool | `false` |  |
 | pod.secret.enable | bool | `false` |  |
 | pod.secret.name | string | `"fx-rate-secrets"` |  |
-| pod.secret.values.REDIS_URL | string | `"redis://user:password@hostname:port/db"` |  |
+| pod.secret.values.REDIS_HOST | string | `"redis://user:password@hostname:port/db"` |  |
 | pod.securityContext | object | `{}` |  |
 | replicaCount | int | `1` |  |
 | resources.limits.cpu | string | `"1000m"` |  |

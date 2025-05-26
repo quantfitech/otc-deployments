@@ -20,8 +20,8 @@ pod:
   annotations: {}
   labels: {}
   securityContext: {}
-  env: {}
   secret:
+    ref: "fallback-price"
     enable: false
     name: "fallback-price-secrets"
     create: false

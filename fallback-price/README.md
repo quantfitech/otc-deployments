@@ -26,11 +26,11 @@ fallback-price service
 | pod.configMap.values.MAX_LOG_STRING_LENGTH | string | `"200"` |  |
 | pod.configMap.values.NODE_ENV | string | `"production"` |  |
 | pod.configMap.values.PORT | string | `"3000"` |  |
+| pod.env | object | `{}` |  |
 | pod.labels | object | `{}` |  |
 | pod.secret.create | bool | `false` |  |
 | pod.secret.enable | bool | `false` |  |
 | pod.secret.name | string | `"fallback-price-secrets"` |  |
-| pod.secret.ref | string | `"fallback-price"` |  |
 | pod.secret.values.DATADOG_API_KEY | string | `"DATADOG_API_KEY-FqMxQn:::"` |  |
 | pod.secret.values.DB_PASSWORD | string | `"RDS_PASSWORD-9yeWJP:::"` |  |
 | pod.securityContext | object | `{}` |  |

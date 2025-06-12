@@ -2,5 +2,5 @@ apiVersion: v2
 name: otc-price
 description: OTC Price service
 type: application
-version: 25.05.0
+version: 25.5.0
 appVersion: ''

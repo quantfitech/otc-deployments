@@ -25,15 +25,16 @@ pod:
   securityContext: {}
   env: {}
   secret:
+    ref: "otc-api"
     enable: false
     name: "otc-api-secrets"
     create: false
     values:
       REDIS_URL: "redis://user:password@hostname:port/db"
-      DB_HOST: "mysql-hostname"
-      DB_USER: "mysql-username"
-      DB_PASSWORD: "mysql-password"
-      DB_NAME: "mysql-database"
+      DB_HOST: "host:3306"
+      DB_USER: "username"
+      DB_PASSWORD: "password"
+      DB_NAME: "otc"
       ENCRYPTION_KEY: "encryption-key"
   configMap:
     enable: false

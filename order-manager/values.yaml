@@ -37,9 +37,9 @@ podSecurityContext: {}
 
 pod:
   secret:
-    enable: false
-    name: "order-manager-secrets"
-    create: false
+    enable: true
+    ref: "order-manager"
+    create: true
     values:
       REDIS_URL: "redis://qf-apn1-prod-redis.hvhn7y.ng.0001.apne1.cache.amazonaws.com:6379"
       DB_HOST: "mysql_hostname"
@@ -56,7 +56,7 @@ pod:
       OKX_API_SECRET: "SIM_OKX_API_SECRET-M557Vm"
   configMap:
     enable: false
-    name: "order-manager-environment"
+    ref: "order-manager-environment"
     create: false
     values:
 
@@ -80,16 +80,6 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-
-# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:

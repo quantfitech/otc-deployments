@@ -40,14 +40,6 @@ spec:
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- with .Values.livenessProbe }}
-          livenessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.readinessProbe }}
-          readinessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -59,7 +51,7 @@ spec:
           envFrom:
           {{- if .Values.pod.configMap.enable }}
             - configMapRef:
-                name: {{ .Values.pod.env.configMap.ref }}
+                name: {{ .Values.pod.configMap.ref }}
           {{- end }}
           {{- if .Values.pod.secret.enable }}
             - secretRef:
@@ -82,23 +74,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
----
-{{- if .Values.pod.secret.create -}}
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ include "otc-price.fullname" . }}
-data:
-  {{- range $k, $v := .Values.pod.secret.values  }}
-  {{ $k }}: {{ $v | b64enc }}
-  {{- end }}
-{{- end }}
----
-{{- if .Values.pod.configMap.create -}}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ include "otc-price.fullname" . }}
-data:
-  {{ .Values.pod.configMap.values | nindent 2 }}
-{{- end }}

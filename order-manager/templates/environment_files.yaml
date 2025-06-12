@@ -1,0 +1,19 @@
+{{ if .Values.pod.secret.create -}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "order-manager.fullname" . }}
+data:
+  {{- range $k, $v := .Values.pod.secret.values  }}
+  {{ $k }}: {{ $v | b64enc }}
+  {{- end }}
+{{- end }}
+---
+{{ if .Values.pod.configMap.create -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "order-manager.fullname" . }}
+data:
+  {{ toYaml .Values.pod.configMap.values | nindent 2 }}
+{{- end }}

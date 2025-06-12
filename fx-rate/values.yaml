@@ -25,7 +25,7 @@ pod:
     name: "fx-rate-secrets"
     create: false
     values:
-      REDIS_HOST: "redis://user:password@hostname:port/db"
+      REDIS_HOST: "hostname"
   configMap:
     enable: false
     ref: "fx-rate-environment"
@@ -34,9 +34,8 @@ pod:
       LOG_LEVEL: "warn"
       NODE_ENV: production
       MAX_LOG_STRING_LENGTH: "200"
-
-securityContext:
-  {}
+  
+securityContext: {}
   # capabilities:
   #   drop:
   #   - ALL

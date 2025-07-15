@@ -69,19 +69,24 @@ git config set name github-actions
 # Summary
 #
 begin
-    echo "packages: $packages"
-    echo "summaryfile: $GITHUB_STEP_SUMMARY"
+    echo "
+| packages   | summaryfile          |
+|:-----------|:---------------------|
+| $packages  | $GITHUB_STEP_SUMMARY |
 
-    echo "# Built helm charts:"
+| **Built helm charts** |                      |
+|:----------------------|:---------------------|
+"
 
     for pack in $packages
-        echo "- $pack, **$(echo $pack-*)**"
+        echo "| $pack | **$(echo $pack-*)** |"
     end
 
     echo "
-+---------------+-----------------------+
+
+|---------------|-----------------------|
 | registry      | $REGISTRY/$IMAGE_NAME |
 | chart version | $ver                  |
-+---------------+-----------------------+
+|---------------|-----------------------|
 "
 end >>$GITHUB_STEP_SUMMARY

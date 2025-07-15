@@ -41,7 +41,12 @@ jobs:
           token: ${{ steps.app_token.outputs.token }}
 
       - uses: nixbuild/nix-quick-install-action@v30
+        with:
+          keep-env-derivations: true
+          keep-outputs: true
       - uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ runner.os }}-common
 
       - run: .github/workflows/publish.sh
         env:

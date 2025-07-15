@@ -34,5 +34,5 @@ jobs:
           primary-key: nix-${{ runner.os }}-common
 
       - name: validate
-        run: .github/workflows/validate.sh
+        run: .github/workflows/validate.fish
         shell: nix develop --quiet --command fish {0}

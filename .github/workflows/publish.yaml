@@ -48,7 +48,7 @@ jobs:
         with:
           primary-key: nix-${{ runner.os }}-common
 
-      - run: .github/workflows/publish.sh
+      - run: .github/workflows/publish.fish
         env:
           OCI_USERNAME: ${{ github.actor }}
           OCI_PASSWORD: ${{ steps.app_token.outputs.token }}

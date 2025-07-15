@@ -36,7 +36,7 @@ jobs:
         with:
           primary-key: nix-${{ runner.os }}-common
 
-      - run: .github/workflows/update-tags.sh
+      - run: .github/workflows/update-tags.fish
         env:
           OCI_USERNAME: ${{ github.repository_owner }}
           OCI_PASSWORD: ${{ steps.app_token.outputs.token }}

@@ -1,4 +1,6 @@
 #!/usr/bin/env nix develop --command fish 
+# vim: ft=fish
+# helix: set-language=fish
 
 function semver_parse
     string split '.' (string replace 'v' '' $argv[1])
@@ -10,10 +12,22 @@ function semver_inc_patch
     string join '.' $s
 end
 
+function semver_inc_minor
+    set s (semver_parse $argv[1])
+    set s[2] (math $s[2] + 1)
+    string join '.' $s
+end
+
+function semver_inc_major
+    set s (semver_parse $argv[1])
+    set s[3] (math $s[3] + 1)
+    string join '.' $s
+end
+
 function check_err
     set t (echo $argv[1] | jq 'has("errors")')
     if test $t = true
-        echo ERROR: $argv[2]. $argv[1]
+        echo ERROR: $argv[2]: $argv[1]
         return 1
     end
 end
@@ -47,9 +61,14 @@ for chartfile in (fd Chart.yaml)
     check_err $output "error requesting tags/list for repo $repo"
 
     set appVersion (echo $output | jq -r '[.[]| select(contains("production"))]|sort|reverse|first')
-    echo "found latest appVersion for $chartfile: $appVersion"
+    echo "latest appVersion for $chartfile: '$appVersion'"
 
     yq -i -y ".appVersion = \"$appVersion\"" $chartfile
+
+    set chartVersion (yq ".version" $chartfile)
+    set chartVersionNew (semver_inc_patch $chartVersion)
+    yq -i -y ".version = \"$chartVersionNew\"" $chartfile
+    echo "updated $chartfile: $chartVersion => $chartVersionNew"
 end
 
 # update helm chart readmes
